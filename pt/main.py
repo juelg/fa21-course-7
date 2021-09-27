@@ -6,8 +6,8 @@ import os
 from torchvision.transforms import transforms
 
 hparams = {"learning_rate": 1e-3, "batch_size": 64, "weight_decay": 1e-5, "img_size": 256}
-std = ...
-mean = ...
+std = 1
+mean = 0
 
 transforms_compose = transforms.Compose([
         transforms.Resize(hparams["img_size"]),

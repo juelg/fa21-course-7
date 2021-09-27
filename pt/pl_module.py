@@ -12,8 +12,6 @@ from torch.autograd import Variable
 from torch.utils.data import DataLoader, random_split
 from torchvision.transforms import transforms
 from functools import partial
-from nets.loss import LossBase
-from nets import initialize_weight
 from pytorch_lightning.metrics import Metric
 from dataset import AutoDataset
 from model import SimpleModel
