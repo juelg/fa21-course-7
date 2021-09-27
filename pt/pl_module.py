@@ -29,7 +29,7 @@ class AutoModule(pl.LightningModule):
     def __init__(self, hparams: Dict, data: AutoDataset):
         super().__init__()
         self.hparams.update(hparams)
-        self.mod = SimpleModel()
+        self.model = SimpleModel()
         train_len = int(SPLIT[0]*len(data))
         val_len = int(SPLIT[1]*len(data))
         test_len = len(data)- train_len - val_len
@@ -40,7 +40,7 @@ class AutoModule(pl.LightningModule):
 
 
     def forward(self, x):
-        return self.mod(x)
+        return self.model(x)
 
 
     def training_step(self, batch, batch_idx):
