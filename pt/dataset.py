@@ -15,10 +15,12 @@ class AutoDataset(Dataset):
     def __len__(self):
         return len(self.f_list)
 
-    def __iter__(self):
-        for i in self.f_list:
-            image = read_image(i)
-            label = i.split("_")[2]
-            if self.transforms is not None:
-                image = self.transforms(image)
-            yield image, label
+    def __getitem__(self, idx):
+        fname = self.f_list[idx]
+        image = read_image(fname)
+        fname_split = fname.split("/")[-1].split("_")
+        angle = int(fname_split[2])/1000.0
+        velocity = int(fname_split[1])/1000.0
+        if self.transforms is not None:
+            image = self.transforms(image)
+        return image, angle, velocity

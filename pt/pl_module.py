@@ -14,16 +14,15 @@ from torchvision.transforms import transforms
 from functools import partial
 from nets.loss import LossBase
 from nets import initialize_weight
-
+from pytorch_lightning.metrics import Metric
 from dataset import AutoDataset
+from model import SimpleModel
 
 DEBUG = False
 MULTI_GPU = False
 NUM_WORKERS = 6 #os.cpu_count() if not DEBUG else 0
 SPLIT = (0.6, 0.2, 0.2)
 
-
-from pytorch_lightning.metrics import Metric
 
 
 
@@ -32,7 +31,7 @@ class AutoModule(pl.LightningModule):
     def __init__(self, hparams: Dict, data: AutoDataset):
         super().__init__()
         self.hparams = hparams
-        self.module = ...
+        self.module = SimpleModel()
         train_len = int(SPLIT[0]*len(data))
         val_len = int(SPLIT[1]*len(data))
         test_len = len(data)- train_len - val_len
