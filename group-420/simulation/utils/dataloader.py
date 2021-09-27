@@ -1,6 +1,7 @@
 from pathlib import Path
 import tensorflow as tf
 
+
 def decode_img(img):
     # convert the compressed string to a 3D uint8 tensor
     img = tf.image.decode_jpeg(img, channels=3)
@@ -10,6 +11,7 @@ def decode_img(img):
 
     return img
 
+
 def process_path(file_path):
 
     # load the raw data from the file as a string
@@ -18,8 +20,9 @@ def process_path(file_path):
 
     return img      
 
+
 def load_image(path):
-    filename = Path(path).stem.split('_')
+    filename = Path(path).stem.split('_')  # index_speed_angle
     
     return process_path(path), (filename[1], filename[2])
 
