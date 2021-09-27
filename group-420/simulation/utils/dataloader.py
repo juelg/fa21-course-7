@@ -18,11 +18,8 @@ def process_path(file_path):
     img = tf.io.read_file(file_path)
     img = decode_img(img)
 
-    return img      
+    print(type(file_path))
+    #filename = Path(file_path).stem.split('_')  # index_speed_angle
 
-
-def load_image(path):
-    filename = Path(path).stem.split('_')  # index_speed_angle
-    
-    return process_path(path), (filename[1], filename[2])
+    return img, tf.cast(0, dtype=tf.float32)
 

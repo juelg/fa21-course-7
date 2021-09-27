@@ -7,6 +7,7 @@ config = configurations.local_config
 
 
 def main():
+    print(dataloader.process_path(r"C:\Users\plain\Downloads\recording\out\center\22_4114_-200.jpg"))
     dataset = tf.data.Dataset.list_files(config["path"])\
         .map(dataloader.process_path)\
         .batch(config["batch_size"])\
