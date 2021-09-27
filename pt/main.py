@@ -9,10 +9,19 @@ hparams = {"learning_rate": 1e-3, "batch_size": 64, "weight_decay": 1e-5, "img_s
 std = 1
 mean = 0
 
+class LambdaTrans():
+    def __init__(self, f):
+        self.f = f
+
+    def __call__(self, x):
+        return self.f(x)
+
+
 transforms_compose = transforms.Compose([
         transforms.Resize(hparams["img_size"]),
         transforms.ToTensor(),
-        transforms.Normalize(mean, std)
+        # transforms.Normalize(mean, std)
+        LambdaTrans(lambda x: x/255)
     ])
 
 folders = [f"/share/user{i}" for i in range(6, 23)]
