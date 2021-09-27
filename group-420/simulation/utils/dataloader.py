@@ -18,7 +18,4 @@ def process_path(file_path):
     img = tf.io.read_file(file_path)
     img = decode_img(img)
 
-    #filename = Path(str(file_path)).stem.split('_')  # index_speed_angle
-
-    return img, tf.strings.to_number(tf.strings.split(tf.strings.split(file_path, '_')[-1], '.')[0])/1000.0 #tf.cast(0, dtype=tf.float32)
-
+    return img, tf.strings.to_number(tf.strings.split(tf.strings.split(file_path, '_')[-1], '.')[0]) / 1000.0
