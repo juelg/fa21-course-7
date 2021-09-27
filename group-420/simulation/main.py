@@ -14,10 +14,8 @@ def main():
 
     #list(dataset.as_numpy_iterator())
     for img, label in dataset:
-        print(tf.strings.to_number(tf.strings.split(label[0][2], '.')[0]))
+        print(label.numpy())
         break
-    #print(list(dataset.as_numpy_iterator()))
-
 
 if __name__ == "__main__":
     main()
