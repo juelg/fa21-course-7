@@ -14,7 +14,7 @@ def main():
 
     #list(dataset.as_numpy_iterator())
     for img, label in dataset:
-        print(label.numpy())
+        print(img.shape)
         break
 
 if __name__ == "__main__":
