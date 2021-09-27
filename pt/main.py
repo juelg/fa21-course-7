@@ -5,7 +5,7 @@ from pl_module import AutoModule
 import os
 from torchvision.transforms import transforms
 
-hparams = {"learning_rate": 1e-3, "batch_size": 64, "weight_decay": 1e-5, "img_size": 256}
+hparams = {"learning_rate": 1e-3, "batch_size": 2, "weight_decay": 1e-5, "img_size": 256}
 std = 1
 mean = 0
 
@@ -18,7 +18,7 @@ class LambdaTrans():
 
 
 transforms_compose = transforms.Compose([
-        transforms.Resize(hparams["img_size"]),
+        transforms.Resize((hparams["img_size"], hparams["img_size"])), # todo: scaling!
         transforms.ToTensor(),
         # transforms.Normalize(mean, std)
         LambdaTrans(lambda x: x/255)
@@ -59,7 +59,7 @@ if __name__ == "__main__":
         deterministic=True,
         #profiler=True,
         #fast_dev_run=True,
-        gpus=[1], #[0, 1],
+        gpus=0, #[0, 1],
         #default_root_dir=os.path.join(results_path, "supervised", "loss_dist_sphere_fix_radius", "asdf"),
         #auto_select_gpus=True,
         #enable_pl_optimizer=True,

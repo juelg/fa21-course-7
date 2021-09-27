@@ -18,7 +18,7 @@ from model import SimpleModel
 
 DEBUG = False
 MULTI_GPU = False
-NUM_WORKERS = 6 #os.cpu_count() if not DEBUG else 0
+NUM_WORKERS = 0 #os.cpu_count() if not DEBUG else 0
 SPLIT = (0.6, 0.2, 0.2)
 
 
@@ -37,6 +37,7 @@ class AutoModule(pl.LightningModule):
         data = random_split(data, (train_len, val_len, test_len), generator=torch.Generator().manual_seed(42))
         self.data = {"train": data[0], "val": data[1], "test": data[2]}
         self.crit = torch.nn.MSELoss()
+        # self.float()
 
 
     def forward(self, x):
@@ -44,22 +45,22 @@ class AutoModule(pl.LightningModule):
 
 
     def training_step(self, batch, batch_idx):
-        x, y = batch
-        y_hat = self.module(x)
+        x, y, velo = batch
+        y_hat = self.model(x)
         loss = self.crit(y_hat, y)
         return loss
 
     def validation_step(self, batch, batch_idx):
-        x, y = batch
-        y_hat = self.module(x)
+        x, y, velo = batch
+        y_hat = self.model(x)
         loss = self.crit(y_hat, y)
-        self.log({"val_loss": loss})
+        self.log("val_loss", loss)
 
     def test_step(self, batch, batch_idx):
-        x, y = batch
-        y_hat = self.module(x)
+        x, y, velo = batch
+        y_hat = self.model(x)
         loss = self.crit(y_hat, y)
-        self.log({"test_loss": loss})
+        self.log("val_loss", loss)
 
 
     def train_dataloader(self):
