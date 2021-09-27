@@ -9,7 +9,7 @@ class SimpleModel(torch.nn.Module):
     def __init__(self):
         super().__init__()
         # maybe add maxpooling
-        self.net = nn.Sequential([
+        self.net = nn.Sequential(
             # N x C x 256 x 256
             nn.Conv2d(3, 8, (5, 5),
                       stride=2, padding=pad(5)),
@@ -44,7 +44,7 @@ class SimpleModel(torch.nn.Module):
             # N x 1 X 1 x 1
             nn.Flatten()
             # N x 1
-        ])
+        )
 
 
     def forward(self, x):
