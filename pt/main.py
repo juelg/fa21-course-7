@@ -59,7 +59,7 @@ if __name__ == "__main__":
         deterministic=True,
         #profiler=True,
         #fast_dev_run=True,
-        gpus=1, #[0, 1],
+        gpus=[1], #[0, 1],
         #default_root_dir=os.path.join(results_path, "supervised", "loss_dist_sphere_fix_radius", "asdf"),
         #auto_select_gpus=True,
         #enable_pl_optimizer=True,
