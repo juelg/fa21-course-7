@@ -2,24 +2,27 @@ from dataset import AutoDataset
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
 from pl_module import AutoModule
-import os 
+import os
 from torchvision.transforms import transforms
 
 hparams = {"learning_rate": 1e-3, "batch_size": 64, "weight_decay": 1e-5, "img_size": 256}
 std = ...
 mean = ...
 
+transforms_compose = transforms.Compose([
+        transforms.Resize(hparams["img_size"]),
+        transforms.ToTensor(),
+        transforms.Normalize(mean, std)
+    ])
 
 folders = [f"/share/user{i}" for i in range(6, 23)]
 
-if __name__ == "__main__":
-    transforms = transforms.Compose([
-            transforms.Resize(hparams["img_size"]),
-            transforms.ToTensor(),
-            transforms.Normalize(mean, std)
-        ])
+folders = list(filter(lambda p: os.path.exists(p), folders))
 
-    data = AutoDataset(folders, transforms)
+if __name__ == "__main__":
+
+
+    data = AutoDataset(folders, transforms_compose)
     pl_module = AutoModule(hparams, data)
 
 
@@ -53,4 +56,3 @@ if __name__ == "__main__":
         #enable_pl_optimizer=True,
     )
     trainer.fit(pl_module)
-
