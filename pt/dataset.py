@@ -12,6 +12,7 @@ class AutoDataset(Dataset):
         self.f_list = []
         for i in self.folders:
             self.f_list += list(Path(i).rglob('*.jpg'))
+        self.f_list =list(filter(lambda fname: int(str(fname).split("/")[-1].split("_")[1]) != 0, self.f_list))
 
     def __len__(self):
         return len(self.f_list)
