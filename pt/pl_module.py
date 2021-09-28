@@ -18,7 +18,7 @@ from model import SimpleModel
 
 DEBUG = False
 MULTI_GPU = False
-NUM_WORKERS = 0 #os.cpu_count() if not DEBUG else 0
+NUM_WORKERS = 4 #os.cpu_count() if not DEBUG else 0
 SPLIT = (0.6, 0.2, 0.2)
 
 
