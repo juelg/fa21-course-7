@@ -1,6 +1,8 @@
 import tensorflow as tf
 import utils.config as configurations
 import utils.dataloader as dataloader
+import utils.model as models
+
 
 config = configurations.local_config
 
@@ -14,11 +16,18 @@ def main():
         .prefetch(2)\
         .shuffle(3 * config["batch_size"], reshuffle_each_iteration=True)
 
-
-    print(list(dataset.as_numpy_iterator()))
+    #print(list(dataset.as_numpy_iterator()))
     for img, label in dataset:
         print(img.shape)
+        print(img)
         break
+
+    model = models.Model420()
+    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+    model.fit(dataset, epochs=1)
+
+    print("finished")
+
 
 if __name__ == "__main__":
     main()
