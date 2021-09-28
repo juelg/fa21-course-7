@@ -109,11 +109,7 @@ def send_control(steering_angle, throttle):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Remote Driving')
-    parser.add_argument(
-        'model',
-        type=str,
-        help='Path to model h5 file. Model should be on the same path.'
-    )
+
     parser.add_argument(
         'image_folder',
         type=str,
@@ -123,16 +119,7 @@ if __name__ == '__main__':
     )
     args = parser.parse_args()
 
-    # check that model Keras version is same as local Keras version
-    f = h5py.File(args.model, mode='r')
-    model_version = f.attrs.get('keras_version')
-    keras_version = str(keras_version).encode('utf8')
-
-    if model_version != keras_version:
-        print('You are using Keras version ', keras_version,
-              ', but the model was built using ', model_version)
-
-    model = load_model(args.model)
+    model = load_model("model")
 
     if args.image_folder != '':
         print("Creating image folder at {}".format(args.image_folder))
