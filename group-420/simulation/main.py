@@ -1,10 +1,7 @@
 import tensorflow as tf
-import utils.config as configurations
+from utils.config import config
 import utils.dataloader as dataloader
 import utils.model as models
-
-
-config = configurations.local_config
 
 
 def main():
