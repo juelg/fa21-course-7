@@ -7,8 +7,8 @@ import tensorflow.keras as k
 class Model420(k.Model):
     def __init__(self):
         super(Model420, self).__init__()
-        self.conv0 = k.layers.Conv2D(filters=8, kernel_size=(5, 5), stride=4, activation="relu")
-        self.conv1 = k.layers.Conv2D(filters=16, kernel_size=(5, 5), stride=4, activation="relu")
+        self.conv0 = k.layers.Conv2D(filters=8, kernel_size=(5, 5), strides=4, activation="relu")
+        self.conv1 = k.layers.Conv2D(filters=16, kernel_size=(5, 5), strides=4, activation="relu")
         self.flatten = k.layers.Flatten()
         self.dropout = k.layers.Dropout(0.2)
         self.dense0 = k.layers.Dense(128, activation="relu")
