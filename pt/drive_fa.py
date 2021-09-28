@@ -128,8 +128,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
 
-    model = AutoModule()
-    model.load_from_checkpoint(PATH(args.model))
+    # model = AutoModule()
+    # model.load_from_checkpoint(PATH(args.model))
+    # model = torch.load(args.model, map_location=torch.device("cpu"))
+    model = AutoModule.load_from_checkpoint(args.model)
+    print(model)
     model.eval()
 
     if args.image_folder != '':

@@ -38,6 +38,7 @@ class AutoModule(pl.LightningModule):
         self.data = {"train": data[0], "val": data[1], "test": data[2]}
         self.crit = torch.nn.MSELoss()
         # self.float()
+        self.save_hyperparameters()
 
 
     def forward(self, x):
