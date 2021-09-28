@@ -27,6 +27,7 @@ def main():
     model.build((config["batch_size"], 160, 320, 3))
     print(model.summary())
     model.fit(dataset, epochs=config["epochs"])
+    model.save("model", save_format="h5")
 
 
 if __name__ == "__main__":
