@@ -16,8 +16,8 @@ def get_sigma_mu():
 
     for entry in dataset:
         img, angle, speed = entry
-        # img_as_array = tv.transforms.ToTensor(img)
-        mean_of_image = torch.mean(img, axis=(0, 1))
+        img_as_array = tv.transforms.ToTensor(img)
+        mean_of_image = torch.mean(img_as_array, axis=(0, 1))
         mu_images += mean_of_image
         counter += 1
 
@@ -26,8 +26,8 @@ def get_sigma_mu():
 
     for entry in dataset:
         img, angle, speed = entry
-        # img_as_array = tv.transforms.ToTensor(img)
-        img_as_array_squared = torch.square(img)
+        img_as_array = tv.transforms.ToTensor(img)
+        img_as_array_squared = torch.square(img_as_array)
         img_as_array_squared_minus = torch.subtract(img_as_array_squared, mu_squared)
 
         sigma_of_image = torch.mean(img_as_array_squared_minus, axis=(0, 1))
