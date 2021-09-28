@@ -8,6 +8,7 @@ def decode_img(img):
 
     # Use `convert_image_dtype` to convert to floats in the [0,1] range.
     img = tf.image.convert_image_dtype(img, tf.float32)
+    img = tf.image.per_image_standardization(img)
 
     return img
 
