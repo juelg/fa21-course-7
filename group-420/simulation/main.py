@@ -12,7 +12,7 @@ def main():
         .map(dataloader.process_path, num_parallel_calls=tf.data.AUTOTUNE)\
         .batch(config["batch_size"])\
         .prefetch(2)\
-        .shuffle(3 * config["path"], reshuffle_each_iteration=True)
+        .shuffle(3 * config["batch_size"], reshuffle_each_iteration=True)
 
 
     print(list(dataset.as_numpy_iterator()))
