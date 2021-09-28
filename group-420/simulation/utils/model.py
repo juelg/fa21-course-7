@@ -13,7 +13,7 @@ class Model420(k.Model):
         self.dropout = k.layers.Dropout(0.2)
         self.dense0 = k.layers.Dense(128, activation="relu")
         self.dense1 = k.layers.Dense(64, activation="relu")
-        self.dense2 = k.layers.Dense(1, activation="relu")
+        self.dense2 = k.layers.Dense(1) 
 
     def call(self, inputs, training=False):
         output = self.conv0(inputs)
