@@ -13,6 +13,7 @@ from flask import Flask
 from io import BytesIO
 
 from keras.models import load_model
+import tensorflow as tf
 import h5py
 from keras import __version__ as keras_version
 
@@ -61,10 +62,17 @@ def telemetry(sid, data):
         image = Image.open(BytesIO(base64.b64decode(imgString)))
         image_array = np.asarray(image)
 
-        # cropping images per model.py code
-        image_array = image_array[70:135, :, :]
 
-        steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
+        image_array = tf.convert_to_tensor(image_array, dtype=tf.float32)
+        image_array = tf.image.convert_image_dtype(image_array, tf.float32)
+        image_array = tf.image.per_image_standardization(image_array)
+
+        image_array = tf.expand_dims(image_array, axis=0)
+
+        # cropping images per model.py code
+        #image_array = image_array[70:135, :, :]
+
+        steering_angle = float(model.predict(image_array, batch_size=1)[0][0])
 
         throttle = controller.update(float(speed))
 
