@@ -59,4 +59,4 @@ class Model420(k.Model):
         output = self.dense1(output)
         output = self.dense2(output)
 
-        return output * 25
+        return output
