@@ -1,5 +1,7 @@
 import torch
 from torch import nn
+import torchvision
+from itertools import chain
 
 def pad(f):
     return int((f - 1) / 2)
@@ -49,9 +51,28 @@ class SimpleModel(torch.nn.Module):
 
 
     def forward(self, x):
-        # print(x.shape)
-        # print(x.dtype)
         n = self.net(x)
-        # print(n.shape)
-        # print(n.dtype)
         return n
+
+
+class AdModel(torch.nn.Module):
+
+    def __init__(self, num_features=500):
+        super().__init__()
+        self.model_conv = torchvision.models.resnet18(pretrained=True)
+        for param in self.model_conv.parameters():
+            param.requires_grad = False
+        num_ftrs = self.model_conv.fc.in_features
+        self.model_conv.fc = nn.Linear(num_ftrs, num_features)
+
+        self.reg = nn.Sequential(
+            nn.ReLU(inplace=True),
+            nn.BatchNorm1d(num_features=num_features),
+            nn.Linear(num_features, 1)
+        )
+        
+    def forward(self, x):
+        return self.reg(self.model_conv(x))
+
+    def parameters(self):
+        return chain(self.model_conv.fc.parameters(), self.reg.parameters())

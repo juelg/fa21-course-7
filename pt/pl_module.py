@@ -14,12 +14,12 @@ from torchvision.transforms import transforms
 from functools import partial
 from pytorch_lightning.metrics import Metric
 from dataset import AutoDataset
-from model import SimpleModel
+from model import AdModel, SimpleModel
 
 DEBUG = False
 MULTI_GPU = False
-NUM_WORKERS = 4 #os.cpu_count() if not DEBUG else 0
-SPLIT = (0.6, 0.2, 0.2)
+# NUM_WORKERS = 4 #os.cpu_count() if not DEBUG else 0
+SPLIT = (0.9, 0.05, 0.05)
 
 
 
@@ -29,7 +29,8 @@ class AutoModule(pl.LightningModule):
     def __init__(self, hparams: Dict, data: AutoDataset=None):
         super().__init__()
         self.hparams.update(hparams)
-        self.model = SimpleModel()
+        # self.model = SimpleModel()
+        self.model = AdModel()
         if data is not None:
             train_len = int(SPLIT[0]*len(data))
             val_len = int(SPLIT[1]*len(data))
@@ -49,6 +50,7 @@ class AutoModule(pl.LightningModule):
         x, y, velo = batch
         y_hat = self.model(x)
         loss = self.crit(y_hat, y)
+        self.log("loss", loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -61,20 +63,20 @@ class AutoModule(pl.LightningModule):
         x, y, velo = batch
         y_hat = self.model(x)
         loss = self.crit(y_hat, y)
-        self.log("val_loss", loss)
+        self.log("test_loss", loss)
 
 
     def train_dataloader(self):
-        return DataLoader(self.data["train"], batch_size=self.hparams["batch_size"], num_workers=NUM_WORKERS,
+        return DataLoader(self.data["train"], batch_size=self.hparams["batch_size"], num_workers=self.hparams["workers"],
                               drop_last=True, pin_memory=True)
 
     def val_dataloader(self):
-        return DataLoader(self.data["val"], batch_size=self.hparams["batch_size"], num_workers=NUM_WORKERS,
+        return DataLoader(self.data["val"], batch_size=self.hparams["batch_size"], num_workers=self.hparams["workers"],
                               drop_last=True, pin_memory=True)
 
 
     def test_dataloader(self):
-        return DataLoader(self.data["test"], batch_size=self.hparams["batch_size"], num_workers=NUM_WORKERS,
+        return DataLoader(self.data["test"], batch_size=self.hparams["batch_size"], num_workers=self.hparams["workers"],
                               drop_last=True, pin_memory=True)
 
     def configure_optimizers(self):
