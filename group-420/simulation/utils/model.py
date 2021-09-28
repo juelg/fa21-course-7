@@ -1,5 +1,3 @@
-    
-   
 import tensorflow as tf
 import tensorflow.keras as k
 
@@ -32,35 +30,33 @@ class Model420(k.Model):
         self.dropout = k.layers.Dropout(0.2)
         self.dense0 = k.layers.Dense(128, activation="relu")
         self.dense1 = k.layers.Dense(64, activation="relu")
-        self.dense2 = k.layers.Dense(1, activation='tanh') 
+        self.dense2 = k.layers.Dense(1, activation='tanh')
 
     def call(self, inputs, training=False):
-
         output = self.conv0(inputs)
         output = self.max0(output)
-        output = self.bn0(output,training=training)
+        output = self.bn0(output, training=training)
 
         output = self.conv1(output)
         output = self.max1(output)
-        output = self.bn1(output,training=training)
+        output = self.bn1(output, training=training)
 
         output = self.conv2(output)
         output = self.max2(output)
-        output = self.bn2(output,training=training)
+        output = self.bn2(output, training=training)
 
         output = self.conv3(output)
         output = self.max3(output)
-        output = self.bn3(output,training=training)
+        output = self.bn3(output, training=training)
 
         output = self.conv4(output)
         output = self.max4(output)
-        output = self.bn4(output,training=training)
-
+        output = self.bn4(output, training=training)
 
         output = self.flatten(output)
         output = self.dropout(output, training)
         output = self.dense0(output)
         output = self.dense1(output)
         output = self.dense2(output)
-        
-        return output *25
+
+        return output * 25
