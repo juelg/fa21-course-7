@@ -18,15 +18,15 @@ def main():
 
     #print(list(dataset.as_numpy_iterator()))
     for img, label in dataset:
-        print(img.shape)
-        print(img)
+        #print(img.shape)
+        #print(img)
         break
 
     model = models.Model420()
     model.compile(optimizer="adam", loss="mse", metrics=["mae"])
-    model.fit(dataset, epochs=1)
-
-    print("finished")
+    model.build((config["batch_size"], 160, 320, 3))
+    print(model.summary())
+    model.fit(dataset, epochs=config["epochs"])
 
 
 if __name__ == "__main__":
