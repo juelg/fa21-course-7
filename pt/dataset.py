@@ -25,4 +25,4 @@ class AutoDataset(Dataset):
         velocity = int(fname_split[1])/1000.0
         if self.transforms is not None:
             image = self.transforms(image)
-        return image.float() if isinstance(image, torch.tensor) else image, torch.tensor(angle, dtype=torch.float), torch.tensor(velocity, dtype=torch.float)
+        return image.float() if isinstance(image, torch.Tensor) else image, torch.tensor(angle, dtype=torch.float), torch.tensor(velocity, dtype=torch.float)
