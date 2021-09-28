@@ -26,16 +26,16 @@ SPLIT = (0.6, 0.2, 0.2)
 
 class AutoModule(pl.LightningModule):
 
-    def __init__(self, hparams: Dict, data: AutoDataset):
+    def __init__(self, hparams: Dict, data: AutoDataset=None):
         super().__init__()
         self.hparams.update(hparams)
         self.model = SimpleModel()
-        train_len = int(SPLIT[0]*len(data))
-        val_len = int(SPLIT[1]*len(data))
-        test_len = len(data)- train_len - val_len
-
-        data = random_split(data, (train_len, val_len, test_len), generator=torch.Generator().manual_seed(42))
-        self.data = {"train": data[0], "val": data[1], "test": data[2]}
+        if data is not None:
+            train_len = int(SPLIT[0]*len(data))
+            val_len = int(SPLIT[1]*len(data))
+            test_len = len(data)- train_len - val_len
+            data = random_split(data, (train_len, val_len, test_len), generator=torch.Generator().manual_seed(42))
+            self.data = {"train": data[0], "val": data[1], "test": data[2]}
         self.crit = torch.nn.MSELoss()
         # self.float()
         self.save_hyperparameters()
