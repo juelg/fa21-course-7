@@ -253,3 +253,4 @@ cython_debug/
 config.py
 .idea/
 model/
+logs/
