@@ -22,7 +22,7 @@ while True:
     backwarped, trajectory = pipeline(img) 
     
     # Compute new steering angle
-    cp, ci, cd = (1.0, 0.0, 0.5)*0.0005
+    cp, ci, cd = np.array([1.0, 0.0, 0.5])*0.0005
     alpha = steeringAngleAlpha(trajectory, img.shape[1], img.shape[0])
 
     # Apply steering angle
