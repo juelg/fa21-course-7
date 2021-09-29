@@ -48,7 +48,7 @@ def steeringAnglePhi(trajectoryParams: np.array, img_width: int, img_height: int
         float: phi=alpha-90
     """
     # Compute Street Middle from Trajectory Params
-    y_max = img_height-200
+    y_max = img_height-100
     middleOfStreet = np.sum(trajectoryParams*np.array([y_max**2, y_max, 1]))
 
     # Offset if camera introduces a systematic bias
