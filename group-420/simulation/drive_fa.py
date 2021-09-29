@@ -16,11 +16,14 @@ from keras.models import load_model
 import tensorflow as tf
 import h5py
 from keras import __version__ as keras_version
+import numpy as np
 
 sio = socketio.Server()
 app = Flask(__name__)
 model = None
 prev_image_array = None
+
+
 
 class SimplePIController:
     def __init__(self, Kp, Ki):
@@ -81,9 +84,17 @@ def telemetry(sid, data):
 
         # save frame
         if args.image_folder != '':
-            timestamp = datetime.utcnow().strftime('%Y_%m_%d_%H_%M_%S_%f')[:-3]
-            image_filename = os.path.join(args.image_folder, timestamp)
-            image.save('{}.jpg'.format(image_filename))
+            idx = datetime.utcnow().strftime('%f')[:-3]
+            print('INDEXXX  ', idx)
+            print(speed)
+            print(steering_angle)
+            #create new filename: <Index>_<coded_speed>_<coded_angle>.jpg
+            codedSpeed = int(float(speed) * 1000)
+            codedAngle = int(float(steering_angle) * 1000)
+            info = f'{idx}_{codedSpeed}_{codedAngle}.jpg'
+            image_filename = os.path.join(args.image_folder, info)
+            #image.save('{}.jpg'.format(image_filename))
+            image.save(image_filename)
     else:
         # NOTE: DON'T EDIT THIS.
         sio.emit('manual', data={}, skip_sid=True)
@@ -116,13 +127,14 @@ def send_control(steering_angle, throttle):
 
 
 if __name__ == '__main__':
+
     parser = argparse.ArgumentParser(description='Remote Driving')
 
     parser.add_argument(
         'image_folder',
         type=str,
         nargs='?',
-        default='',
+        default= '',
         help='Path to image folder. This is where the images from the run will be saved.'
     )
     args = parser.parse_args()
