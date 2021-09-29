@@ -20,7 +20,7 @@ import numpy as np
 DEBUG = False
 MULTI_GPU = False
 # NUM_WORKERS = 4 #os.cpu_count() if not DEBUG else 0
-SPLIT = (0.9, 0.05, 0.05)
+SPLIT = (0.9, 0.1, 0.0)
 
 
 

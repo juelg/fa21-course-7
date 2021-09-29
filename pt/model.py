@@ -47,10 +47,10 @@ class SimpleModel(torch.nn.Module):
             # N x 256 X 1 x 1
             nn.Conv2d(256, 1, (1, 1)),
             # N x 1 X 1 x 1
-            nn.Flatten()
+            nn.Flatten(),
             # N x 1
+            # nn.Tanh()
         )
-        # self.float()
 
 
     def forward(self, x):

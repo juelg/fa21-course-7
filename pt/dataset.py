@@ -52,7 +52,6 @@ class AutoDataset(Dataset):
         mirror = random.random() < self.mirror_prob
 
         fname = self.f_list[idx]
-        # image = read_image(fname)
         image = Image.open(fname)
         fname_split = str(fname).split("/")[-1].split("_")
         angle = int(fname_split[2].split(self.file_ending)[0])/1000.0

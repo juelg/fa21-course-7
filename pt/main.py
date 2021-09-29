@@ -7,7 +7,8 @@ from torchvision.transforms import transforms
 import numpy as np
 from torchvision.transforms.functional import crop
 
-hparams = {"learning_rate": 1e-4, "batch_size": 32, "weight_decay": 1e-5, "img_size": 256, "workers": 4, "noise": None}
+hparams = {"learning_rate": 1e-4, "batch_size": 32, "weight_decay": 1e-5, "img_size": 256, "workers": 4,
+    "noise": None, "zero_angle_dropout": True, "large_angle_dropout": True}
 gpu = 0
 epochs = 50
 
@@ -44,7 +45,7 @@ folders = list(filter(lambda p: os.path.exists(p), folders))
 if __name__ == "__main__":
 
 
-    data = AutoDataset(folders, transforms_compose)
+    data = AutoDataset(folders, transforms_compose, zero_angle_dropout=hparams["zero_angle_dropout"], large_angle_dropout=hparams["large_angle_dropout"])
     # for i in data:
     #     i[0].save("asdf.png")
     #     exit()
