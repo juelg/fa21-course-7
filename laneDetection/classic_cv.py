@@ -137,14 +137,14 @@ def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=True):
     if lefty.any() and lefty.any() and rightx.any() and righty.any():
         left_fit = np.zeros(3)
         right_fit = np.zeros(3)
-        if left_lane_inds > thres and right_lane_inds > thres:
+        if len(left_lane_inds) > thres and len(right_lane_inds) > thres:
             left_fit = np.polyfit(lefty, leftx, 2)
             right_fit = np.polyfit(righty, rightx, 2)
-        elif left_lane_inds > thres and right_lane_inds <= thres:
+        elif len(left_lane_inds) > thres and len(right_lane_inds) <= thres:
             left_fit = np.polyfit(lefty, leftx, 2)
             right_fit = left_fit
             right_fit[2] = right_fit[2]+lanewidth
-        elif left_lane_inds <= thres and right_lane_inds > thres:
+        elif len(left_lane_inds) <= thres and len(right_lane_inds) > thres:
             right_fit = np.polyfit(righty, rightx, 2)
             left_fit = right_fit
             left_fit[2] = left_fit[2]-lanewidth
