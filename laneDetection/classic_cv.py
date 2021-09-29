@@ -60,7 +60,7 @@ def get_hist(img):
     hist = np.sum(img[3*img.shape[0]//4:,:], axis=0)
     return hist
 
-def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=True):
+def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=False):
     left_a, left_b, left_c = [],[],[]
     right_a, right_b, right_c = [],[],[]
     left_fit_= np.zeros(3)
@@ -168,12 +168,15 @@ def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=True):
     right_fit_[2] = np.mean(right_c[-10:])
 
     # Generate x and y values for plotting
-    ploty = np.linspace(0, img.shape[0]-1, img.shape[0] )
-    left_fitx = left_fit_[0]*ploty**2 + left_fit_[1]*ploty + left_fit_[2]
-    right_fitx = right_fit_[0]*ploty**2 + right_fit_[1]*ploty + right_fit_[2]
+    ploty = None
+    left_fitx = None
+    right_fitx = None
+    #ploty = np.linspace(0, img.shape[0]-1, img.shape[0] )
+    #left_fitx = left_fit_[0]*ploty**2 + left_fit_[1]*ploty + left_fit_[2]
+    #right_fitx = right_fit_[0]*ploty**2 + right_fit_[1]*ploty + right_fit_[2]
 
-    out_img[nonzeroy[left_lane_inds], nonzerox[left_lane_inds]] = [255, 0, 100]
-    out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 100, 255]
+    #out_img[nonzeroy[left_lane_inds], nonzerox[left_lane_inds]] = [255, 0, 100]
+    #out_img[nonzeroy[right_lane_inds], nonzerox[right_lane_inds]] = [0, 100, 255]
     
     return out_img, (left_fitx, right_fitx), (left_fit_, right_fit_), ploty
 
@@ -227,29 +230,30 @@ def pipeline(img, phi):
     warped = perspective_warp(frame, src, dst)
     filtered = black_filter(warped)
     out, curves, lanes, ploty = sliding_window(filtered)
-    out_img = draw_lanes(warped, curves[0], curves[1])
+    #out_img = draw_lanes(warped, curves[0], curves[1])
     trajectory = get_trajectory(lanes)
-    center_fitx = trajectory[0]*ploty**2 + trajectory[1]*ploty + trajectory[2]
-    ploty = ploty[:, np.newaxis]
-    center_fitx = center_fitx[:, np.newaxis]
-    pts = np.concatenate((center_fitx, ploty), axis=1)
-    cv.polylines(out_img, np.int32([pts]), isClosed=False, color=(0, 255, 255), thickness=5)
+    #center_fitx = trajectory[0]*ploty**2 + trajectory[1]*ploty + trajectory[2]
+    #ploty = ploty[:, np.newaxis]
+    #center_fitx = center_fitx[:, np.newaxis]
+    #pts = np.concatenate((center_fitx, ploty), axis=1)
+    #cv.polylines(out_img, np.int32([pts]), isClosed=False, color=(0, 255, 255), thickness=5)
     ###
-    R = 38380*np.pi/(phi*180+np.finfo(float).eps)
-    x0 = warped.shape[1]
-    if np.abs(phi) > 0.05:
-        if phi < 0:
-            motion_fit = R + x0/2 + np.sqrt(R**2-(700-ploty)**2)
-        else:
-            motion_fit = R + x0/2 - np.sqrt(R**2-(700-ploty)**2)
-    else:
-        motion_fit = np.ones((ploty.shape[0], 1))*x0/2
+    #R = 38380*np.pi/(phi*180+np.finfo(float).eps)
+    #x0 = warped.shape[1]
+    #if np.abs(phi) > 0.05:
+    #    if phi < 0:
+    #        motion_fit = R + x0/2 + np.sqrt(R**2-(700-ploty)**2)
+    #    else:
+    #        motion_fit = R + x0/2 - np.sqrt(R**2-(700-ploty)**2)
+    #else:
+    #    motion_fit = np.ones((ploty.shape[0], 1))*x0/2
     #print(motion_fit)
-    pts_curve = np.concatenate((motion_fit, ploty), axis=1)
+    #pts_curve = np.concatenate((motion_fit, ploty), axis=1)
     #print(pts_curve)
     #print("R: {}, x0: {}".format(R, x0))
-    cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
+    #cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
     ###
-    back_warped = perspective_warp(out_img, dst, src)
+    #back_warped = perspective_warp(out_img, dst, src)
     #back_warped = out_img
+    back_warped = None
     return back_warped, trajectory
