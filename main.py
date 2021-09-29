@@ -13,27 +13,30 @@ bw = pc.back_wheels.Back_Wheels()
 
 # choose constant velocity for backwheels
 bw.backward()
+
 bw.speed = 30
 
-while True:
-    ret, img = cap.read()
+try:
+    while True:
+        ret, img = cap.read()
 
-    # Get trajectory and image
-    backwarped, trajectory = pipeline(img) 
-    
-    # Compute new steering angle
-    cp, ci, cd = np.array([1.0, 0.0, 0.0])*0.0005
-    alpha = steeringAngleAlpha(trajectory, img.shape[1], img.shape[0], cp, ci, cd)
+        # Get trajectory and image
+        backwarped, trajectory = pipeline(img) 
+        
+        # Compute new steering angle
+        cp, ci, cd = np.array([1.0, 0.0, 0.0])*0.0005
+        alpha = steeringAngleAlpha(trajectory, img.shape[1], img.shape[0], cp, ci, cd)
 
-    # Apply steering angle
-    fw.turn(alpha / np.pi * 180) # expects angle in degrees
+        # Apply steering angle
+        fw.turn(alpha / np.pi * 180) # expects angle in degrees
 
-    # Stop program if user wants it
-    if cv.waitKey(1) & 0xFF == ord('q'):
-        break
+        # Stop program if user wants it
+        if cv.waitKey(1) & 0xFF == ord('q'):
+            break
 
-    cv.imshow("Real-Time", backwarped)
-
-
-cap.release()
-cv.destroyAllWindows()
+        cv.imshow("Real-Time", backwarped)
+except KeyboardInterrupt as e:
+    bw.speed = 0
+    fw.turn(90)
+    cap.release()
+    cv.destroyAllWindows()
