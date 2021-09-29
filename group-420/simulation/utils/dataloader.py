@@ -3,7 +3,7 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 
 FLIP_PERCENTAGE = 0.5
-BLUR_PERCENTAGE = 0.4
+BLUR_PERCENTAGE = 0.1
 
 
 def decode_img(img):
@@ -27,8 +27,8 @@ def apply_flip(img, steering_angle):
 
 
 def apply_gaus_blur(img):
-    blur_size = np.random.randint(2, 5)
-    blur_sigma = np.random.rand() * 2
+    blur_size = np.random.randint(2, 4)
+    blur_sigma = np.random.rand() * 0.5
     val = tf.random.uniform((), dtype=tf.dtypes.float32)
 
     def gaus_blur_true_fn(): return tfa.image.gaussian_filter2d(img, blur_size, blur_sigma, "REFLECT", 0)
