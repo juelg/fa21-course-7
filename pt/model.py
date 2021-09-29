@@ -96,11 +96,13 @@ class NvidiaModel(torch.nn.Module):
         out = get_flat_fts(in_size, self.conv_net)
         self.ful_net = nn.Sequential(
             nn.Linear(out, 100),
-            # nn.BatchNorm1d(num_features=100),
+            nn.BatchNorm1d(num_features=100),
             nn.ELU(inplace=True),
             nn.Linear(100, 50),
+            nn.BatchNorm1d(num_features=50),
             nn.ELU(inplace=True),
             nn.Linear(50, 10),
+            nn.BatchNorm1d(num_features=10),
             nn.ELU(inplace=True),
             nn.Linear(10, 1),
             nn.Tanh()
