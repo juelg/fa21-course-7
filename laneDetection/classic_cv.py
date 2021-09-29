@@ -238,7 +238,10 @@ def pipeline(img, phi):
     R = 51300*np.pi/(phi*180+np.finfo(float).eps)
     x0 = warped.shape[1]
     if np.abs(phi) > 0.05:
-        motion_fit = (R + x0/2 - np.sqrt(R**2-(700-ploty)**2))
+        if phi < 0:
+            motion_fit = R + x0/2 + np.sqrt(R**2-(700-ploty)**2)
+        else:
+            motion_fit = R + x0/2 - np.sqrt(R**2-(700-ploty)**2)
     else:
         motion_fit = np.ones((ploty.shape[0], 1))*x0/2
     #print(motion_fit)
