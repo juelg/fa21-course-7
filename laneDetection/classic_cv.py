@@ -236,7 +236,7 @@ def pipeline(img, phi):
     cv.polylines(out_img, np.int32([pts]), isClosed=False, color=(0, 255, 255), thickness=5)
     ###
     R = 51300*np.pi/(phi*180+np.finfo(float).eps)
-    x0 = img.shape[1]
+    x0 = warped.shape[1]
     if np.abs(phi) > 0.05:
         motion_fit = (R + x0/2 - np.sqrt(R**2-(700-ploty)**2))
     else:
