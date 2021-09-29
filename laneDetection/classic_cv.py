@@ -237,14 +237,14 @@ def pipeline(img, phi):
     ###
     R = 51300*np.pi/(phi*180+np.finfo(float).eps)
     x0 = img.shape[1]
-    print("R: {}, x0: {}".format(R, x0))
     if np.abs(phi) > 0.05:
         motion_fit = (R + x0/2 - np.sqrt(R**2-(700-ploty)**2))
     else:
         motion_fit = np.ones((ploty.shape[0], 1))*x0/2
-    print(motion_fit)
+    #print(motion_fit)
     pts_curve = np.concatenate((motion_fit, ploty), axis=1)
     print(pts_curve)
+    print("R: {}, x0: {}".format(R, x0))
     #cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
     ###
     back_warped = perspective_warp(out_img, dst, src)
