@@ -20,9 +20,13 @@ val_dataset = tf.data.Dataset.list_files(config["val_path"], shuffle=True, seed=
     .prefetch(2)\
     .shuffle(config["batch_size"], reshuffle_each_iteration=True)
 
-model = models.Model420(config["crop"])
-model.compile(optimizer="adam", loss="mse", metrics=["mae"])
-model.build((config["batch_size"], 160, 320, 3))
+if config["saved_model_path"]:
+    model = tf.keras.models.load_model(config["saved_model_path"])
+    print("Retraining Saved Model")
+else:
+    model = models.Model420(config["crop"])
+    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+    model.build((config["batch_size"], 160, 320, 3))
 
 # summary and logging
 print(model.summary())
