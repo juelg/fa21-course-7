@@ -85,15 +85,10 @@ def telemetry(sid, data):
         # save frame
         if args.image_folder != '':
             idx = datetime.utcnow().strftime('%f')[:-3]
-            print('INDEXXX  ', idx)
-            print(speed)
-            print(steering_angle)
-            #create new filename: <Index>_<coded_speed>_<coded_angle>.jpg
             codedSpeed = int(float(speed) * 1000)
             codedAngle = int(float(steering_angle) * 1000)
             info = f'{idx}_{codedSpeed}_{codedAngle}.jpg'
             image_filename = os.path.join(args.image_folder, info)
-            #image.save('{}.jpg'.format(image_filename))
             image.save(image_filename)
     else:
         # NOTE: DON'T EDIT THIS.
@@ -134,7 +129,7 @@ if __name__ == '__main__':
         'image_folder',
         type=str,
         nargs='?',
-        default= '',
+        default= r'C:\Users\helen\UniShit\SimTech\Semester\2\Ferienakademie\Teacher_student_data',#'',
         help='Path to image folder. This is where the images from the run will be saved.'
     )
     args = parser.parse_args()
