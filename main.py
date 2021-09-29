@@ -35,7 +35,7 @@ try:
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
 
-        cv.imshow("Real-Time", backwarped)
+        #cv.imshow("Real-Time", backwarped)
 except KeyboardInterrupt as e:
     bw.speed = 0
     fw.turn(90)
