@@ -16,6 +16,7 @@ bw = pc.back_wheels.Back_Wheels()
 bw.backward()
 
 bw.speed = 30
+phi = 0.0
 
 try:
     while True:
@@ -23,11 +24,12 @@ try:
         ret, img = cap.read()
 
         # Get trajectory and image
-        backwarped, trajectory = pipeline(img) 
+        backwarped, trajectory = pipeline(img, phi) 
         
         # Compute new steering angle
         cp, ci, cd = np.array([1.0, 0.0, 0.5])*0.002
         alpha = steeringAngleAlpha(trajectory, img.shape[1], img.shape[0], cp, ci, cd)
+        phi = alpha-np.pi/2
 
         # Apply steering angle
         fw.turn(alpha / np.pi * 180) # expects angle in degrees
@@ -39,7 +41,8 @@ try:
         end = time.time()
         print("Duration: {:.2f}s".format(end-start))
 
-        #cv.imshow("Real-Time", backwarped)
+        cv.imshow("Real-Time", backwarped)
+
 except KeyboardInterrupt as e:
     bw.speed = 0
     fw.turn(90)
