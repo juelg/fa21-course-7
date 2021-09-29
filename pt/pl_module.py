@@ -30,8 +30,8 @@ class AutoModule(pl.LightningModule):
     def __init__(self, hparams: Dict, data: AutoDataset=None):
         super().__init__()
         self.hparams.update(hparams)
-        # self.model = SimpleModel()
-        # self.model = AdModel()
+        #self.model = SimpleModel()
+        #self.model = AdModel()
         self.model = NvidiaModel()
         if data is not None:
             train_len = int(SPLIT[0]*len(data))
@@ -49,22 +49,36 @@ class AutoModule(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         x, y, velo = batch
+        y = y.unsqueeze(-1)
+        #print(y.shape)
+        #print(x)
+        #print(y)
         y_hat = self.model(x)
-        if self.hparams.get("noise") is not None:
-            bs = x.shape[0]
-            y = y+torch.normal(0, 1*0.005, size=(bs,), device=self.device)
+        #if self.hparams.get("noise") is not None:
+        #    bs = x.shape[0]
+        #    y = y+torch.normal(0, 1*0.005, size=(bs,), device=self.device)
         loss = self.crit(y_hat, y)
+        #if(y[0]>0.02):
+        #    img = x[0,:,:,:].cpu()
+        #    img_save = transforms.ToPILImage()(img)#.squeeze_(0))
+        #    img_save.save(f"alex_{y[0].cpu()}.png")
+        #    exit()
+        #print(y_hat[:5])
+        #print("True", y[:5])
+        #print("Pred", y_hat[:5])
         self.log("loss", loss)
         return loss
 
     def validation_step(self, batch, batch_idx):
         x, y, velo = batch
+        y = y.unsqueeze(-1)
         y_hat = self.model(x)
         loss = self.crit(y_hat, y)
         self.log("val_loss", loss)
 
     def test_step(self, batch, batch_idx):
         x, y, velo = batch
+        y = y.unsqueeze(-1)
         y_hat = self.model(x)
         loss = self.crit(y_hat, y)
         self.log("test_loss", loss)
@@ -72,7 +86,7 @@ class AutoModule(pl.LightningModule):
 
     def train_dataloader(self):
         return DataLoader(self.data["train"], batch_size=self.hparams["batch_size"], num_workers=self.hparams["workers"],
-                              drop_last=True, pin_memory=True)
+                              drop_last=True, pin_memory=True, shuffle=True)
 
     def val_dataloader(self):
         return DataLoader(self.data["val"], batch_size=self.hparams["batch_size"], num_workers=self.hparams["workers"],
@@ -85,3 +99,4 @@ class AutoModule(pl.LightningModule):
 
     def configure_optimizers(self):
         return optim.Adam(self.model.parameters(), self.hparams['learning_rate'], weight_decay=self.hparams.get('weight_decay', 0))
+    

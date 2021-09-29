@@ -109,7 +109,7 @@ class NvidiaModel(torch.nn.Module):
         super().__init__()
         #320x160 -> 160, 320
         self.conv_net = nn.Sequential(
-            # N x C x 72 x 320
+            # N x C x 100 x 320
             nn.Conv2d(3, 24, (5, 5),
                       stride=2, padding=pad(5)),
             nn.BatchNorm2d(num_features=24),
@@ -148,7 +148,7 @@ class NvidiaModel(torch.nn.Module):
             nn.BatchNorm1d(num_features=10),
             nn.ELU(inplace=True),
             nn.Linear(10, 1),
-            nn.Tanh()
+            # nn.Tanh()
         )
     def forward(self, x):
         n = self.conv_net(x)
