@@ -26,8 +26,8 @@ class LambdaTrans():
 transforms_compose = transforms.Compose([
         # transforms.Resize((hparams["img_size"], hparams["img_size"])), # todo: scaling!
         LambdaTrans(lambda x: crop(x, 160-100, 0, 100, 320)), # crop out the upper part of the image -> 72 x 320
-        # transforms.ColorJitter(brightness=np.random.uniform(0.4, 0.6), contrast=np.random.uniform(0.7, 0.9),
-        #                    saturation=np.random.uniform(0.7, 0.9)),
+        # transforms.ColorJitter(brightness=np.random.uniform(0.5), contrast=np.random.uniform(0.5),
+        #                    saturation=np.random.uniform(0.5)),
         transforms.GaussianBlur(9, sigma=1),
         transforms.ToTensor(),
         # transforms.Normalize(mean, std),
