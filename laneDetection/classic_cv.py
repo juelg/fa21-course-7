@@ -235,7 +235,7 @@ def pipeline(img, phi):
     pts = np.concatenate((center_fitx, ploty), axis=1)
     cv.polylines(out_img, np.int32([pts]), isClosed=False, color=(0, 255, 255), thickness=5)
     ###
-    R = 51300*180*phi/np.pi
+    R = 51300*180*np.pi/(phi+np.finfo(float).eps)
     x0 = 485
     motion_fit = (R - x0/2 - 2*np.sqrt((R-x0/2)**2-((700-ploty)**2+x0**2/4-R*x0)))
     pts_curve = np.concatenate((motion_fit, ploty), axis=1)
