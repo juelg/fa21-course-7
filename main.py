@@ -39,7 +39,8 @@ try:
         end = time.time()
         print("Duration: {:.2f}s".format(end-start))
 
-        #cv.imshow("Real-Time", backwarped)
+        cv.imshow("Real-Time", backwarped)
+
 except KeyboardInterrupt as e:
     bw.speed = 0
     fw.turn(90)
