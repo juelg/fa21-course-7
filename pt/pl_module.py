@@ -40,7 +40,6 @@ class AutoModule(pl.LightningModule):
             data = random_split(data, (train_len, val_len, test_len), generator=torch.Generator().manual_seed(42))
             self.data = {"train": data[0], "val": data[1], "test": data[2]}
         self.crit = torch.nn.MSELoss()
-        # self.float()
         self.save_hyperparameters()
 
 
