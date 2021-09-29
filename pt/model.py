@@ -9,6 +9,34 @@ from torch.autograd import Variable
 def pad(f):
     return int((f - 1) / 2)
 
+ # class StolenModel(torch.nn.Module):
+ #     def __init__(self):
+ #         super().__init__()
+ #         # maybe add maxpooling
+ #         self.net = nn.Sequential(
+ #             # N x C x 256 x 256
+ #             nn.Conv2d(3, 8, (3, 3), stride=1, padding= "valid"),
+ #             nn.ReLU(),
+ #             nn.torch.nn.MaxPool2d(kernel_size, stride=None, padding=0, dilation=1, return_indices=False, ceil_mode=False)
+ #             nn.BatchNorm2d(num_features=8),
+ #             nn.Conv2d(8, 16, (3, 3), stride=1, padding="valid"),
+ #             nn.ReLU(),
+ #             nn.BatchNorm2d(num_features=16),
+ #             nn.Conv2d(16, 64, (3, 3), stride=1, padding="valid"),
+ #             nn.ReLU(),
+ #             nn.BatchNorm2d(num_features=64),
+ #             nn.Conv2d(64, 128, (3, 3), stride=1, padding="valid"),
+ #             nn.ReLU(),
+ #             nn.BatchNorm2d(num_features=128),
+ #             nn.Conv2d(128, 256, (3, 3), stride=1, padding="valid"),
+ #             nn.ReLU(),
+ #             nn.BatchNorm2d(num_features=256),
+ #             nn.Flatten(),
+ #             nn.Dropout2d(p=0.2)
+ #             nn.Linear
+
+
+
 
 class SimpleModel(torch.nn.Module):
     def __init__(self):
