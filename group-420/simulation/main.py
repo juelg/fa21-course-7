@@ -5,12 +5,16 @@ import utils.model as models
 
 dataset = tf.data.Dataset.list_files(config["path"], shuffle=True, seed=420)\
     .map(dataloader.process_path, num_parallel_calls=tf.data.AUTOTUNE)\
+    .filter(lambda img, steering_angle, speed: speed > 20)\
+    .map(lambda img, steering_angle, _: (img, steering_angle), num_parallel_calls=tf.data.AUTOTUNE)\
     .batch(config["batch_size"])\
     .prefetch(2)\
     .shuffle(config["batch_size"], reshuffle_each_iteration=True)
 
 val_dataset = tf.data.Dataset.list_files(config["val_path"], shuffle=True, seed=420)\
     .map(dataloader.process_path, num_parallel_calls=tf.data.AUTOTUNE)\
+    .filter(lambda img, steering_angle, speed: speed > 20)\
+    .map(lambda img, steering_angle, _: (img, steering_angle), num_parallel_calls=tf.data.AUTOTUNE)\
     .batch(config["batch_size"])\
     .prefetch(2)\
     .shuffle(config["batch_size"], reshuffle_each_iteration=True)
