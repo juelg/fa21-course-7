@@ -25,7 +25,8 @@ def steeringAnglePIDStep(phi: float, dt: float, dt_1: float, d_total: float, cp:
         float: New steering angle
     """
     phi_new = min(max(cp*dt + cd*(dt-dt_1) + ci*d_total, -np.pi/4), np.pi/4)
-    print(phi_new, phi, cp*dt + cd*(dt-dt_1) + ci*d_total)
+    print("p={:.2f}, d={:.2f}, i={:.2f}".format(cp*dt, cd*(dt-dt_1), ci*d_total))
+    #print(phi_new, phi, cp*dt + cd*(dt-dt_1) + ci*d_total)
     return phi_new
 
 errors = [0.0, 0.0]

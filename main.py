@@ -24,7 +24,6 @@ try:
 
         # Get trajectory and image
         backwarped, trajectory = pipeline(img) 
-        print(trajectory)
         
         # Compute new steering angle
         cp, ci, cd = np.array([1.0, 0.0, 0.5])*0.002
