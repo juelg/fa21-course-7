@@ -237,6 +237,7 @@ def pipeline(img, phi):
     ###
     R = 51300*np.pi/(phi*180+np.finfo(float).eps)
     x0 = img.shape[1]
+    print("R: {}, x0: {}".format(R, x0))
     if np.abs(phi) > 0.05:
         motion_fit = (R + x0/2 - np.sqrt(R**2-(700-ploty)**2))
     else:
