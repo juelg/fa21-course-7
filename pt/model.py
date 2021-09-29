@@ -1,7 +1,9 @@
 import torch
 from torch import nn
+from torch.nn.modules.activation import Tanh
 import torchvision
 from itertools import chain
+import numpy as np
 
 def pad(f):
     return int((f - 1) / 2)
@@ -68,11 +70,12 @@ class AdModel(torch.nn.Module):
         self.reg = nn.Sequential(
             nn.ReLU(inplace=True),
             nn.BatchNorm1d(num_features=num_features),
-            nn.Linear(num_features, 1)
+            nn.Linear(num_features, 1),
+            nn.Tanh()
         )
         
     def forward(self, x):
-        return self.reg(self.model_conv(x))
+        return self.reg(self.model_conv(x))*np.pi
 
     def parameters(self):
         return chain(self.model_conv.fc.parameters(), self.reg.parameters())

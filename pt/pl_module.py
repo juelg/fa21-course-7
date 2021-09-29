@@ -15,6 +15,7 @@ from functools import partial
 from pytorch_lightning.metrics import Metric
 from dataset import AutoDataset
 from model import AdModel, SimpleModel
+import numpy as np
 
 DEBUG = False
 MULTI_GPU = False
@@ -49,6 +50,9 @@ class AutoModule(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         x, y, velo = batch
         y_hat = self.model(x)
+        if self.hparams.get("noise") is not None:
+            bs = x.shape[0]
+            y = y+torch.normal(0, np.pi*0.005, size=(bs,), device=self.device)
         loss = self.crit(y_hat, y)
         self.log("loss", loss)
         return loss
