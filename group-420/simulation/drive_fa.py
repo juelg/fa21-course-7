@@ -129,7 +129,7 @@ if __name__ == '__main__':
         'image_folder',
         type=str,
         nargs='?',
-        default= r'C:\Users\helen\UniShit\SimTech\Semester\2\Ferienakademie\Teacher_student_data',#'',
+        default= '',
         help='Path to image folder. This is where the images from the run will be saved.'
     )
     args = parser.parse_args()
