@@ -53,7 +53,7 @@ class AutoModule(pl.LightningModule):
         y_hat = self.model(x)
         if self.hparams.get("noise") is not None:
             bs = x.shape[0]
-            y = y+torch.normal(0, np.pi*0.005, size=(bs,), device=self.device)
+            y = y+torch.normal(0, 1*0.005, size=(bs,), device=self.device)
         loss = self.crit(y_hat, y)
         self.log("loss", loss)
         return loss

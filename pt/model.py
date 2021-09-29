@@ -69,23 +69,23 @@ class NvidiaModel(torch.nn.Module):
             # N x C x 72 x 320
             nn.Conv2d(3, 24, (5, 5),
                       stride=2, padding=pad(5)),
-            # nn.BatchNorm2d(num_features=24),
+            nn.BatchNorm2d(num_features=24),
             nn.ELU(inplace=True),
 
             nn.Conv2d(24, 36, (5, 5), stride=2, padding=pad(5)),
-            # nn.BatchNorm2d(num_features=36),
+            nn.BatchNorm2d(num_features=36),
             nn.ELU(inplace=True),
 
             nn.Conv2d(36, 48, (5, 5), stride=2, padding=pad(5)),
-            # nn.BatchNorm2d(num_features=48),
+            nn.BatchNorm2d(num_features=48),
             nn.ELU(inplace=True),
 
             nn.Conv2d(48, 64, (5, 5), stride=2, padding=pad(5)),
-            # nn.BatchNorm2d(num_features=64),
+            nn.BatchNorm2d(num_features=64),
             nn.ELU(inplace=True),
 
             nn.Conv2d(64, 64, (3, 3), padding=pad(3)),
-            # nn.BatchNorm2d(num_features=64),
+            nn.BatchNorm2d(num_features=64),
             nn.ELU(inplace=True),
 
             nn.Flatten(),
@@ -102,6 +102,7 @@ class NvidiaModel(torch.nn.Module):
             nn.Linear(50, 10),
             nn.ELU(inplace=True),
             nn.Linear(10, 1),
+            nn.Tanh()
         )
     def forward(self, x):
         n = self.conv_net(x)
@@ -128,7 +129,7 @@ class AdModel(torch.nn.Module):
         )
         
     def forward(self, x):
-        return self.reg(self.model_conv(x))*np.pi
+        return self.reg(self.model_conv(x))
 
     def parameters(self):
         return chain(self.model_conv.fc.parameters(), self.reg.parameters())
