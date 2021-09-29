@@ -67,10 +67,14 @@ def telemetry(sid, data):
 
         # cropping images per model.py code
         # image_array.transpose(2,0,1)
-
+        # Alex
+        image = crop(image, 160-100, 0, 100, 320)
+        image = torch.tensor(image, dtype=torch.float)/255.
+        # End alex         
         # input = transforms_compose(image_array[None, :, :, :])
-        input = transforms_compose(image)
-        input = input.unsqueeze(0)
+        #input = transforms_compose(image)
+        input = image.unsqueeze(0)
+        print(input)
         print(input.shape)
 
         steering_angle = float(model.forward(input))
