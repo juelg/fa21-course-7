@@ -9,11 +9,16 @@ def undistortFisheye(inputImage):
 	K=np.array([[292.5851572423127, 0.0, 330.1523966943549], [0.0, 282.51797529693005, 235.00288626441738], [0.0, 0.0, 1.0]]) # intrinsic camera matrix
 	D=np.array([[-0.03250151126922701], [0.13954178412597282], [-0.45421825891205], [0.3873736197248964]]) # fisheye distortion coefficients
 
-	map1, map2 = cv.fisheye.initUndistortRectifyMap(K, D, np.eye(3), K, (w,h), cv.CV_16SC2) # init undistort map
+	dims = (970, 700)
+	R = np.eye(3)
+	R[0, 2] = 0.6
+	R[1, 2] = 0.4
+
+	map1, map2 = cv.fisheye.initUndistortRectifyMap(K, D, R, K, dims, cv.CV_16SC2) # init undistort map
 	undistortedImg = cv.remap(inputImage, map1, map2, interpolation=cv.INTER_LINEAR, borderMode=cv.BORDER_CONSTANT)
-	cv.imshow("Undistorted Fisheye", undistortedImg)
-	cv.waitKey(0)
-	cv.destroyAllWindows()
+	#cv.imshow("Undistorted Fisheye", undistortedImg)
+	#cv.waitKey(0)
+	#cv.destroyAllWindows()
 	return undistortedImg
 
 '''
