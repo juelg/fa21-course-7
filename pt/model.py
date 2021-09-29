@@ -9,44 +9,52 @@ from torch.autograd import Variable
 def pad(f):
     return int((f - 1) / 2)
 
-class StolenModel(torch.nn.Module):
-    def __init__(self):
-        super().__init__()
-        # maybe add maxpooling
-        self.net = nn.Sequential(
-            nn.Conv2d(3, 8, (3, 3), stride=1, padding="valid"),
-            nn.ReLU(),
-            nn.MaxPool2d((2, 2), stride=None, padding="valid"),
-            nn.BatchNorm2d(num_features=8),
-            nn.Conv2d(8, 16, (3, 3), stride=1, padding="valid"),
-            nn.ReLU(),
-            nn.MaxPool2d((2, 2), stride=None, padding="valid"),
-            nn.BatchNorm2d(num_features=16),
-            nn.Conv2d(16, 64, (3, 3), stride=1, padding="valid"),
-            nn.ReLU(),
-            nn.MaxPool2d((2, 2), stride=None, padding="valid"),
-            nn.BatchNorm2d(num_features=64),
-            nn.Conv2d(64, 128, (3, 3), stride=1, padding="valid"),
-            nn.ReLU(),
-            nn.MaxPool2d((2, 2), stride=None, padding="valid"),
-            nn.BatchNorm2d(num_features=128),
-            nn.Conv2d(128, 256, (3, 3), stride=1, padding="valid"),
-            nn.ReLU(),
-            nn.MaxPool2d((2, 2), stride=None, padding="valid"),
-            nn.BatchNorm2d(num_features=256),
-            nn.Flatten(),
-            nn.Dropout2d(p=0.2),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64),
-            nn.ReLU(),
-            nn.Linear(64, 1),
-            nn.Tanh(),
-        )
+# Model can also be used; not debugged
+# class StolenModel(torch.nn.Module):
+#     def __init__(self):
+#         super().__init__()
+#         # maybe add maxpooling
+#         self.net = nn.Sequential(
+#             nn.Conv2d(3, 8, (3, 3), stride=1, padding="valid"),
+#             nn.ReLU(),
+#             nn.MaxPool2d((2, 2), stride=None, padding="valid"),
+#             nn.BatchNorm2d(num_features=8),
+#             nn.Conv2d(8, 16, (3, 3), stride=1, padding="valid"),
+#             nn.ReLU(),
+#             nn.MaxPool2d((2, 2), stride=None, padding="valid"),
+#             nn.BatchNorm2d(num_features=16),
+#             nn.Conv2d(16, 64, (3, 3), stride=1, padding="valid"),
+#             nn.ReLU(),
+#             nn.MaxPool2d((2, 2), stride=None, padding="valid"),
+#             nn.BatchNorm2d(num_features=64),
+#             nn.Conv2d(64, 128, (3, 3), stride=1, padding="valid"),
+#             nn.ReLU(),
+#             nn.MaxPool2d((2, 2), stride=None, padding="valid"),
+#             nn.BatchNorm2d(num_features=128),
+#             nn.Conv2d(128, 256, (3, 3), stride=1, padding="valid"),
+#             nn.ReLU(),
+#             nn.MaxPool2d((2, 2), stride=None, padding="valid"),
+#             nn.BatchNorm2d(num_features=256),
+#             nn.Flatten(),
+#             nn.Dropout2d(p=0.2),
+#         )
+#
+#         # calculate what comes out
+#         out = get_flat_fts(in_size, self.conv_net)
+#         self.ful_net = nn.Sequential(
+#             nn.Linear(out, 128),
+#             nn.ReLU(),
+#             nn.Linear(128, 64),
+#             nn.ReLU(),
+#             nn.Linear(64, 1),
+#             nn.Tanh(),
+#             # nn.Tanh()
+#         )
+#
+#     def forward(self, x):
+#         n = self.conv_net(x)
+#         return self.ful_net(n)
 
-    def forward(self, x):
-        n = self.net(x)
-        return n
 
 
 
