@@ -27,7 +27,7 @@ if config["saved_model_path"]:
     print("Retraining Saved Model")
 else:
     model = models.Model420(config["crop"], config["angle"])
-    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+    model.compile(optimizer="adam", loss="mse", metrics=["mae", "mse"])
     model.build((config["batch_size"], 160, 320, 3))
 
 # summary and logging
