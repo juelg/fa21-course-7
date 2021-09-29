@@ -48,9 +48,11 @@ def sobel_filter(img, s_thresh=(100, 255), sx_thresh=(100, 255)):
 def black_filter(img):
     img = np.copy(img)
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    gaussian = cv.GaussianBlur(gray, (5, 5), 1)
+    clahe = cv.createCLAHE(2.0, (100, 100))
     #cv.imshow("Gray", gray)
-    
-    ret, binary = cv.threshold(gray, 0, 255, type=cv.THRESH_BINARY_INV+cv.THRESH_OTSU)
+    filtered = clahe.apply(gaussian)
+    ret, binary = cv.threshold(filtered, 0, 255, type=cv.THRESH_BINARY_INV+cv.THRESH_OTSU)
     #cv.imshow("Binarized", binary)
     return binary
 
@@ -67,9 +69,10 @@ def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=True):
 
     histogram = get_hist(img)
     # find peaks of left and right halves
-    midpoint = int(histogram.shape[0]/2)
-    leftx_base = np.argmax(histogram[:midpoint])
-    rightx_base = np.argmax(histogram[midpoint:]) + midpoint
+    left_point = int(4*histogram.shape[0]//9)
+    right_point = int(5*histogram.shape[0]//9)
+    leftx_base = np.argmax(histogram[:left_point])
+    rightx_base = np.argmax(histogram[right_point:]) + right_point
     
     
     # Set height of windows
