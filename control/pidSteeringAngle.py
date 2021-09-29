@@ -25,7 +25,7 @@ def steeringAnglePIDStep(phi: float, dt: float, dt_1: float, d_total: float, cp:
         float: New steering angle
     """
     phi_new = min(max(cp*dt + cd*(dt-dt_1) + ci*d_total, -np.pi/4), np.pi/4)
-    print("p={:.2f}, d={:.2f}, i={:.2f}".format(cp*dt, cd*(dt-dt_1), ci*d_total))
+    #print("p={:.2f}, d={:.2f}, i={:.2f}".format(cp*dt, cd*(dt-dt_1), ci*d_total))
     #print(phi_new, phi, cp*dt + cd*(dt-dt_1) + ci*d_total)
     return phi_new
 
@@ -62,7 +62,7 @@ def steeringAnglePhi(trajectoryParams: np.array, img_width: int, img_height: int
     phi = steeringAnglePIDStep(phis[-1], errors[-1], errors[-2], np.sum(errors), cp, ci, cd)
     phis.append(phi)
 
-    print("e={:.2f}, alpha={:.2f}".format(errors[-1], (phi+np.pi/2)/np.pi*180))
+    #print("e={:.2f}, alpha={:.2f}".format(errors[-1], (phi+np.pi/2)/np.pi*180))
 
     # Prevent Overflow
     if len(errors) > 10:
