@@ -235,7 +235,7 @@ def pipeline(img, phi):
     pts = np.concatenate((center_fitx, ploty), axis=1)
     cv.polylines(out_img, np.int32([pts]), isClosed=False, color=(0, 255, 255), thickness=5)
     ###
-    R = 51300*np.pi/(phi*180+np.finfo(float).eps)
+    R = 38380*np.pi/(phi*180+np.finfo(float).eps)
     x0 = warped.shape[1]
     if np.abs(phi) > 0.05:
         if phi < 0:
@@ -250,5 +250,6 @@ def pipeline(img, phi):
     #print("R: {}, x0: {}".format(R, x0))
     cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
     ###
-    back_warped = perspective_warp(out_img, dst, src)
+    #back_warped = perspective_warp(out_img, dst, src)
+    back_warped = out_img
     return back_warped, trajectory
