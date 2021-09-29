@@ -1,11 +1,12 @@
 import tensorflow as tf
 import tensorflow.keras as k
 
-
 class Model420(k.Model):
     def __init__(self):
         super(Model420, self).__init__()
-
+        
+        self.crop = k.layers.Cropping2D(cropping=((60, 0), (0, 0)))
+        
         self.conv0 = k.layers.Conv2D(filters=8, kernel_size=(3, 3), strides=1, activation="relu")
         self.max0 = k.layers.MaxPool2D()
         self.bn0 = k.layers.BatchNormalization()
@@ -33,7 +34,9 @@ class Model420(k.Model):
         self.dense2 = k.layers.Dense(1, activation='tanh')
 
     def call(self, inputs, training=False):
-        output = self.conv0(inputs)
+        output = self.crop(inputs)
+        
+        output = self.conv0(output)
         output = self.max0(output)
         output = self.bn0(output, training=training)
 
