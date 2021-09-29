@@ -243,9 +243,9 @@ def pipeline(img, phi):
         motion_fit = np.ones((ploty.shape[0], 1))*x0/2
     #print(motion_fit)
     pts_curve = np.concatenate((motion_fit, ploty), axis=1)
-    print(pts_curve)
-    print("R: {}, x0: {}".format(R, x0))
-    #cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
+    #print(pts_curve)
+    #print("R: {}, x0: {}".format(R, x0))
+    cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
     ###
     back_warped = perspective_warp(out_img, dst, src)
     return back_warped, trajectory
