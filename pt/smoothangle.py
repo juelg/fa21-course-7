@@ -15,7 +15,7 @@ pic_nr = list(map(lambda fname: int(str(fname).split("/")[-1].split("_")[0]), f_
 angle = list(map(lambda fname: int(str(fname).split("/")[-1].split("_")[2]), f_list))
 
 fig, ax = plt.subplots()
-ax.plot(pic_nr, angle)
+ax.plot(pic_nr, angle, 'o-')
 
 ax.set(xlabel='driving time(pic_nr)', ylabel='angel')
 ax.grid()
