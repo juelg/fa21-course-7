@@ -1,0 +1,66 @@
+\documentclass[a4paper]{article}
+
+\newcommand{\dd}[1]{\mathrm{d}#1}
+
+% Bilder einfügen
+\usepackage{graphicx}
+
+% Links
+\usepackage{hyperref}
+
+% Maths
+\usepackage{amsmath}
+
+% Meta-Daten
+\title{Self-Driving with PiCar}
+\date{\today}
+\begin{document}
+    
+    \maketitle
+
+    \section{Symbols}
+    \subsection{General}
+    \begin{description}
+        \item[$t$] Time Index
+        \item[$\Delta$] Duration between two time steps 
+    \end{description}
+
+    \subsection{Angles} 
+    \begin{description}
+        \item[$\alpha_t$] Steering Angle fed into PiCar
+        \item[$\phi_t$] Steering angle $\in [-\frac{\pi}{4}, \frac{\pi}{4}]$ used in most calculations.
+    \end{description}
+
+    \subsection{Vehicle Position}
+    \begin{description}
+        \item[$\vec{z}_t$] 2D position of the vehicle relative to the camera position
+    \end{description}
+
+    \subsection{Lane Middle Approximation}
+    \begin{description}
+        \item[$\vec{z}_{m,t}(\tau)$] Description of the lane middle with parametrization $\tau$
+        \item[$\sigma$] Angle of the street middle
+        \item[$o_x$] Horizontal offset of the street middle, relative to the origin
+    \end{description}
+
+    \subsection{Vehicle Velocity}
+    \begin{description}
+        \item[$\vec{v}_t$] 2D velocity vector
+    \end{description}
+
+    \section{Formulas}
+    \begin{description}
+        \item[Angle Relations] $\alpha_t = \phi_t + \frac{\pi}{2}$
+        \item[2D Velocity] $\vec{v}_t = v_t \cdot \begin{bmatrix}
+            \sin{\phi_t} \\
+            \cos{\phi_t}
+        \end{bmatrix}$ 
+        \item[Position Update] $\vec{z}_{t+1} = \vec{z}_{t} + \Delta \cdot \vec{v}_t$
+        \item[Street Description] $\vec{z}_{m,t}(\tau) = \begin{bmatrix}
+            o_x + \tau \cdot \sin{\sigma} \\
+            \tau \cdot \cos{\sigma_x}
+        \end{bmatrix}$ 
+    \end{description}
+
+    
+\end{document}
