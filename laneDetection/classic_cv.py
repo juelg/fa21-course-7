@@ -250,6 +250,6 @@ def pipeline(img, phi):
     #print("R: {}, x0: {}".format(R, x0))
     cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
     ###
-    #back_warped = perspective_warp(out_img, dst, src)
-    back_warped = out_img
+    back_warped = perspective_warp(out_img, dst, src)
+    #back_warped = out_img
     return back_warped, trajectory
