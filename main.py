@@ -32,6 +32,7 @@ while True:
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 
+    cv.imshow("Real-Time", backwarped)
 
 
 cap.release()
