@@ -17,7 +17,7 @@ bw.backward()
 
 bw.speed = 30
 phi = 0.0
-
+i = 1
 try:
     while True:
         start = time.time()
@@ -41,7 +41,9 @@ try:
         end = time.time()
         print("Duration: {:.2f}s".format(end-start))
 
-        cv.imshow("Real-Time", backwarped)
+        #cv.imshow("Real-Time", backwarped)
+        cv.imwrite(i+".png", backwarped)
+        i += 1
 
 except KeyboardInterrupt as e:
     bw.speed = 0
