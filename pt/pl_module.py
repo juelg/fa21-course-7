@@ -14,7 +14,7 @@ from torchvision.transforms import transforms
 from functools import partial
 from pytorch_lightning.metrics import Metric
 from dataset import AutoDataset
-from model import AdModel, SimpleModel
+from model import AdModel, NvidiaModel, SimpleModel
 import numpy as np
 
 DEBUG = False
@@ -31,7 +31,8 @@ class AutoModule(pl.LightningModule):
         super().__init__()
         self.hparams.update(hparams)
         # self.model = SimpleModel()
-        self.model = AdModel()
+        # self.model = AdModel()
+        self.model = NvidiaModel()
         if data is not None:
             train_len = int(SPLIT[0]*len(data))
             val_len = int(SPLIT[1]*len(data))

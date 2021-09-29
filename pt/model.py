@@ -4,6 +4,7 @@ from torch.nn.modules.activation import Tanh
 import torchvision
 from itertools import chain
 import numpy as np
+from torch.autograd import Variable
 
 def pad(f):
     return int((f - 1) / 2)
@@ -55,6 +56,58 @@ class SimpleModel(torch.nn.Module):
     def forward(self, x):
         n = self.net(x)
         return n
+
+def get_flat_fts(in_size, fts):
+    f = fts(Variable(torch.ones(1, *in_size)))
+    return int(np.prod(f.size()[1:]))
+
+class NvidiaModel(torch.nn.Module):
+    def __init__(self, in_size=(3, 74, 320)):
+        super().__init__()
+        #320x160 -> 160, 320
+        self.conv_net = nn.Sequential(
+            # N x C x 72 x 320
+            nn.Conv2d(3, 24, (5, 5),
+                      stride=2, padding=pad(5)),
+            # nn.BatchNorm2d(num_features=24),
+            nn.ELU(inplace=True),
+
+            nn.Conv2d(24, 36, (5, 5), stride=2, padding=pad(5)),
+            # nn.BatchNorm2d(num_features=36),
+            nn.ELU(inplace=True),
+
+            nn.Conv2d(36, 48, (5, 5), stride=2, padding=pad(5)),
+            # nn.BatchNorm2d(num_features=48),
+            nn.ELU(inplace=True),
+
+            nn.Conv2d(48, 64, (5, 5), stride=2, padding=pad(5)),
+            # nn.BatchNorm2d(num_features=64),
+            nn.ELU(inplace=True),
+
+            nn.Conv2d(64, 64, (3, 3), padding=pad(3)),
+            # nn.BatchNorm2d(num_features=64),
+            nn.ELU(inplace=True),
+
+            nn.Flatten(),
+            # dropout 0.2
+
+        )
+        # calculate what comes out
+        out = get_flat_fts(in_size, self.conv_net)
+        self.ful_net = nn.Sequential(
+            nn.Linear(out, 100),
+            nn.ELU(inplace=True),
+            nn.Linear(100, 50),
+            nn.ELU(inplace=True),
+            nn.Linear(50, 10),
+            nn.ELU(inplace=True),
+            nn.Linear(10, 1),
+        )
+    def forward(self, x):
+        n = self.conv_net(x)
+        return self.ful_net(n)
+
+
 
 
 class AdModel(torch.nn.Module):

@@ -5,8 +5,9 @@ from pl_module import AutoModule
 import os
 from torchvision.transforms import transforms
 import numpy as np
+from torchvision.transforms.functional import crop
 
-hparams = {"learning_rate": 1e-4, "batch_size": 32, "weight_decay": 1e-5, "img_size": 256, "workers": 4}
+hparams = {"learning_rate": 1e-4, "batch_size": 32, "weight_decay": 1e-5, "img_size": 256, "workers": 4, "noise": None}
 gpu = 0
 epochs = 50
 
@@ -22,7 +23,8 @@ class LambdaTrans():
 
 
 transforms_compose = transforms.Compose([
-        transforms.Resize((hparams["img_size"], hparams["img_size"])), # todo: scaling!
+        # transforms.Resize((hparams["img_size"], hparams["img_size"])), # todo: scaling!
+        LambdaTrans(lambda x: crop(x, 0, 160-72, 72, 320)), # crop out the upper part of the image -> 72 x 320
         transforms.ToTensor(),
         transforms.Normalize(mean, std)
         # LambdaTrans(lambda x: x/255)
