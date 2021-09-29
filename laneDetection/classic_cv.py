@@ -220,7 +220,7 @@ def test_pipeline():
         back_warped = perspective_warp(out_img, dst, src)
         cv.imshow("image", back_warped)
 
-def pipeline(img):
+def pipeline(img, phi):
     src = np.float32([[355, 524], [684, 532], [598, 399], [440, 405]])
     dst = np.float32([[355, 526], [684, 526], [684, 402], [355, 402]])
     frame = undistort.undistortFisheye(img)
@@ -233,6 +233,14 @@ def pipeline(img):
     ploty = ploty[:, np.newaxis]
     center_fitx = center_fitx[:, np.newaxis]
     pts = np.concatenate((center_fitx, ploty), axis=1)
-    cv.polylines(out_img, np.int32([pts]), isClosed=False, color=(0, 255, 255), thickness=3)
+    cv.polylines(out_img, np.int32([pts]), isClosed=False, color=(0, 255, 255), thickness=5)
+    ###
+    R = 51300*180*phi/np.pi
+    x0 = 485
+    motion_fit = int(R + x0/2 - 2*np.sqrt((R+x0/2)**2+ploty**2+x0**2/4-R*x0))
+    motion_fit = motion_fit[:, np.newaxis]
+    pts_curve = np.concatenate((motion_fit, ploty), axis=1)
+    cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
+    ###
     back_warped = perspective_warp(out_img, dst, src)
     return back_warped, trajectory
