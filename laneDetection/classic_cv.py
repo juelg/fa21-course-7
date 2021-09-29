@@ -67,7 +67,7 @@ def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=True):
     right_fit_ = np.zeros(3)
     out_img = np.dstack((img, img, img))*255
 
-    thres = 100
+    thres = 300
     lanewidth = 700
 
     histogram = get_hist(img)
@@ -134,31 +134,30 @@ def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=True):
     righty = nonzeroy[right_lane_inds] 
 
     # Fit a second order polynomial to each
-    if lefty.any() and lefty.any() and rightx.any() and righty.any():
-        left_fit = np.zeros(3)
-        right_fit = np.zeros(3)
-        if len(left_lane_inds) > thres and len(right_lane_inds) > thres:
-            left_fit = np.polyfit(lefty, leftx, 2)
-            right_fit = np.polyfit(righty, rightx, 2)
-        elif len(left_lane_inds) > thres and len(right_lane_inds) <= thres:
-            left_fit = np.polyfit(lefty, leftx, 2)
-            right_fit = left_fit
-            right_fit[2] = right_fit[2]+lanewidth
-        elif len(left_lane_inds) <= thres and len(right_lane_inds) > thres:
-            right_fit = np.polyfit(righty, rightx, 2)
-            left_fit = right_fit
-            left_fit[2] = left_fit[2]-lanewidth
-        else:
-            left_fit[2] = midpoint - lanewidth//2
-            right_fit[2] = midpoint + lanewidth//2
-    
-        left_a.append(left_fit[0])
-        left_b.append(left_fit[1])
-        left_c.append(left_fit[2])
-    
-        right_a.append(right_fit[0])
-        right_b.append(right_fit[1])
-        right_c.append(right_fit[2])
+    left_fit = np.zeros(3)
+    right_fit = np.zeros(3)
+    if len(left_lane_inds) > thres and len(right_lane_inds) > thres:
+        left_fit = np.polyfit(lefty, leftx, 2)
+        right_fit = np.polyfit(righty, rightx, 2)
+    elif len(left_lane_inds) > thres and len(right_lane_inds) <= thres:
+        left_fit = np.polyfit(lefty, leftx, 2)
+        right_fit = left_fit
+        right_fit[2] = right_fit[2]+lanewidth
+    elif len(left_lane_inds) <= thres and len(right_lane_inds) > thres:
+        right_fit = np.polyfit(righty, rightx, 2)
+        left_fit = right_fit
+        left_fit[2] = left_fit[2]-lanewidth
+    else:
+        left_fit[2] = midpoint - lanewidth//2
+        right_fit[2] = midpoint + lanewidth//2
+
+    left_a.append(left_fit[0])
+    left_b.append(left_fit[1])
+    left_c.append(left_fit[2])
+
+    right_a.append(right_fit[0])
+    right_b.append(right_fit[1])
+    right_c.append(right_fit[2])
     
     left_fit_[0] = np.mean(left_a[-10:])
     left_fit_[1] = np.mean(left_b[-10:])
