@@ -63,12 +63,16 @@ def get_hist(img):
 def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=True):
     left_a, left_b, left_c = [],[],[]
     right_a, right_b, right_c = [],[],[]
-    left_fit_= np.empty(3)
-    right_fit_ = np.empty(3)
+    left_fit_= np.zeros(3)
+    right_fit_ = np.zeros(3)
     out_img = np.dstack((img, img, img))*255
+
+    thres = 100
+    lanewidth = 700
 
     histogram = get_hist(img)
     # find peaks of left and right halves
+    midpoint = img.shape[1]//2
     left_point = int(4*histogram.shape[0]//9)
     right_point = int(5*histogram.shape[0]//9)
     leftx_base = np.argmax(histogram[:left_point])
@@ -131,8 +135,22 @@ def sliding_window(img, nwindows=20, margin=100, minpix = 1, draw_windows=True):
 
     # Fit a second order polynomial to each
     if lefty.any() and lefty.any() and rightx.any() and righty.any():
-        left_fit = np.polyfit(lefty, leftx, 2)
-        right_fit = np.polyfit(righty, rightx, 2)
+        left_fit = np.zeros(3)
+        right_fit = np.zeros(3)
+        if left_lane_inds > thres and right_lane_inds > thres:
+            left_fit = np.polyfit(lefty, leftx, 2)
+            right_fit = np.polyfit(righty, rightx, 2)
+        elif left_lane_inds > thres and right_lane_inds <= thres:
+            left_fit = np.polyfit(lefty, leftx, 2)
+            right_fit = left_fit
+            right_fit[2] = right_fit[2]+lanewidth
+        elif left_lane_inds <= thres and right_lane_inds > thres:
+            right_fit = np.polyfit(righty, rightx, 2)
+            left_fit = right_fit
+            left_fit[2] = left_fit[2]-lanewidth
+        else:
+            left_fit[2] = midpoint - lanewidth//2
+            right_fit[2] = midpoint + lanewidth//2
     
         left_a.append(left_fit[0])
         left_b.append(left_fit[1])
