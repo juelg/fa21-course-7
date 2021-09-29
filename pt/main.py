@@ -24,19 +24,20 @@ class LambdaTrans():
 
 transforms_compose = transforms.Compose([
         # transforms.Resize((hparams["img_size"], hparams["img_size"])), # todo: scaling!
-        LambdaTrans(lambda x: crop(x, 0, 160-72, 72, 320)), # crop out the upper part of the image -> 72 x 320
-        transforms.ColorJitter(brightness=np.random.uniform(0.7, 0.9), contrast=np.random.uniform(0.7, 0.9),
-                           saturation=np.random.uniform(0.7, 0.9)),
+        LambdaTrans(lambda x: crop(x, 160-100, 0, 100, 320)), # crop out the upper part of the image -> 72 x 320
+        # transforms.ColorJitter(brightness=np.random.uniform(0.4, 0.6), contrast=np.random.uniform(0.7, 0.9),
+        #                    saturation=np.random.uniform(0.7, 0.9)),
+        transforms.GaussianBlur(9, sigma=1),
         transforms.ToTensor(),
-        transforms.Normalize(mean, std),
-
+        # transforms.Normalize(mean, std),
 
     # LambdaTrans(lambda x: x/255)
     ])
 
 # folders = [f"/share/user{i}" for i in range(6, 23)]
 # folders = ["/home/tobi/fa/imgs"] #+ 
-folders = [f"/home/tobi/fa/data/train{i}" for i in [4, 5, 6, 7]]
+folders = [f"/home/tobi/fa/data/train{i}" for i in [4, 5]]
+folders += [f"/home/tobi/fa/data/center/train{i}" for i in [6, 7]]
 
 folders = list(filter(lambda p: os.path.exists(p), folders))
 
@@ -44,6 +45,10 @@ if __name__ == "__main__":
 
 
     data = AutoDataset(folders, transforms_compose)
+    # for i in data:
+    #     i[0].save("asdf.png")
+    #     exit()
+        
     pl_module = AutoModule(hparams, data)
 
 

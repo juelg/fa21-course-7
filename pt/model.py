@@ -62,7 +62,7 @@ def get_flat_fts(in_size, fts):
     return int(np.prod(f.size()[1:]))
 
 class NvidiaModel(torch.nn.Module):
-    def __init__(self, in_size=(3, 74, 320)):
+    def __init__(self, in_size=(3, 100, 320)):
         super().__init__()
         #320x160 -> 160, 320
         self.conv_net = nn.Sequential(
@@ -96,6 +96,7 @@ class NvidiaModel(torch.nn.Module):
         out = get_flat_fts(in_size, self.conv_net)
         self.ful_net = nn.Sequential(
             nn.Linear(out, 100),
+            # nn.BatchNorm1d(num_features=100),
             nn.ELU(inplace=True),
             nn.Linear(100, 50),
             nn.ELU(inplace=True),

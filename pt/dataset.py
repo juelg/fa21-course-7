@@ -13,18 +13,22 @@ class AutoDataset(Dataset):
         self.mirror_prob = mirror_prob
         self.zero_angle_dropout = zero_angle_dropout
         self.large_angle_dropout = large_angle_dropout
+        self.file_ending = ".jpg"
         # create list of files
         self.f_list = []
         for i in self.folders:
-            to_append = list(Path(i).rglob('*.jpg'))
-            to_append = zip(map(lambda fname: list(map(int, str(fname).replace('.jpg', '').split("/")[-1].split("_")), to_append)), to_append)
+            to_append = list(Path(i).rglob(f'*{self.file_ending}'))
+            if len(to_append) == 0:
+                continue
+            to_append = list(zip(map(lambda fname: list(map(int, str(fname).replace(self.file_ending, '').split("/")[-1].split("_"))), to_append), to_append))
 
-            minimum_idx = min(map(lambda entry: entry[0][0], to_append))
-            maximum_idx = max(map(lambda entry: entry[0][0], to_append))
+            minimum_idx = min(map(lambda entry: entry[0][0], to_append[:]))
+            
+            maximum_idx = max(map(lambda entry: entry[0][0], to_append[:]))
 
             if self.zero_angle_dropout:
-                threshold_left = 2
-                threshold_right = 2
+                threshold_left = 20
+                threshold_right = 20
 
                 filter_func_zero = lambda entry: \
                     entry[0][2] != 0 or \
@@ -51,7 +55,7 @@ class AutoDataset(Dataset):
         # image = read_image(fname)
         image = Image.open(fname)
         fname_split = str(fname).split("/")[-1].split("_")
-        angle = int(fname_split[2].split(".jpg")[0])/1000.0
+        angle = int(fname_split[2].split(self.file_ending)[0])/1000.0
         velocity = int(fname_split[1])/1000.0
 
         if mirror:
