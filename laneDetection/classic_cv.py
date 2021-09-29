@@ -237,7 +237,10 @@ def pipeline(img, phi):
     ###
     R = 51300*180*np.pi/(phi+np.finfo(float).eps)
     x0 = img.shape[1]
-    motion_fit = (R + x0/2 - np.sqrt(R**2-(700-ploty)**2))
+    if np.abs(phi) > 0.05:
+        motion_fit = (R + x0/2 - np.sqrt(R**2-(700-ploty)**2))
+    else:
+        motion_fit = np.ones((ploty.shape[0], 1))*x0/2
     pts_curve = np.concatenate((motion_fit, ploty), axis=1)
     print(pts_curve)
     #cv.polylines(out_img, np.int32([pts_curve]), isClosed=False, color=(255, 0, 0), thickness=3)
