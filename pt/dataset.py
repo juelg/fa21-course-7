@@ -23,7 +23,14 @@ class AutoDataset(Dataset):
             maximum_idx = max(map(lambda entry: entry[0][0], to_append))
 
             if self.zero_angle_dropout:
-                filter_func_zero = lambda entry: entry[0][2] != 0 or to_append[max(entry[0][0]-1, minimum_idx)][2] != 0 or to_append[min(entry[0][0]+1, maximum_idx)][2] != 0
+                threshold_left = 2
+                threshold_right = 2
+
+                filter_func_zero = lambda entry: \
+                    entry[0][2] != 0 or \
+                    len(list(filter(lambda e: e == 0, [to_append[max(entry[0][0] - i, minimum_idx)] for i in range(1, threshold_left + 1)]))) < threshold_left or \
+                    len(list(filter(lambda e: e == 0, [to_append[min(entry[0][0] + i, maximum_idx)] for i in range(1, threshold_right+1)]))) < threshold_right
+
                 to_append = list(filter(filter_func_zero, to_append))
 
             if self.large_angle_dropout:
