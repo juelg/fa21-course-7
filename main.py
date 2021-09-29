@@ -1,6 +1,7 @@
 import cv2 as cv
 import picar as pc
 import numpy as np
+import time
 
 from laneDetection.classic_cv import pipeline
 from control.pidSteeringAngle import steeringAngleAlpha
@@ -18,6 +19,7 @@ bw.speed = 30
 
 try:
     while True:
+        start = time.time()
         ret, img = cap.read()
 
         # Get trajectory and image
@@ -34,6 +36,9 @@ try:
         # Stop program if user wants it
         if cv.waitKey(1) & 0xFF == ord('q'):
             break
+
+        end = time.time()
+        print("Duration: {:.2f}s".format(end-start))
 
         #cv.imshow("Real-Time", backwarped)
 except KeyboardInterrupt as e:
