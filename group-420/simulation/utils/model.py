@@ -2,9 +2,10 @@ import tensorflow as tf
 import tensorflow.keras as k
 
 class Model420(k.Model):
-    def __init__(self, crop):
+    def __init__(self, crop, angle):
         super(Model420, self).__init__()
-        
+
+        self.angle = angle
         self.crop = k.layers.Cropping2D(cropping=((crop, 0), (0, 0)))
         
         self.conv0 = k.layers.Conv2D(filters=8, kernel_size=(3, 3), strides=1, activation="relu")
@@ -62,4 +63,4 @@ class Model420(k.Model):
         output = self.dense1(output)
         output = self.dense2(output)
 
-        return output
+        return output * self.angle
