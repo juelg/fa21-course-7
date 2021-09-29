@@ -52,7 +52,7 @@ def steeringAnglePhi(trajectoryParams: np.array, img_width: int, img_height: int
 
     # Offset if camera introduces a systematic bias
     bias = 57
-    errors.append(-(middleOfStreet-img_width/2-bias))
+    errors.append((middleOfStreet-img_width/2-bias))
     
 
     # Compute new steering angle
