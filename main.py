@@ -42,7 +42,7 @@ try:
         print("Duration: {:.2f}s".format(end-start))
 
         #cv.imshow("Real-Time", backwarped)
-        cv.imwrite(i+".png", backwarped)
+        cv.imwrite(str(i)+".png", backwarped)
         i += 1
 
 except KeyboardInterrupt as e:
