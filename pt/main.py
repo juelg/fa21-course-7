@@ -25,9 +25,13 @@ class LambdaTrans():
 transforms_compose = transforms.Compose([
         # transforms.Resize((hparams["img_size"], hparams["img_size"])), # todo: scaling!
         LambdaTrans(lambda x: crop(x, 0, 160-72, 72, 320)), # crop out the upper part of the image -> 72 x 320
+        transforms.ColorJitter(brightness=np.random.uniform(0.7, 0.9), contrast=np.random.uniform(0.7, 0.9),
+                           saturation=np.random.uniform(0.7, 0.9)),
         transforms.ToTensor(),
-        transforms.Normalize(mean, std)
-        # LambdaTrans(lambda x: x/255)
+        transforms.Normalize(mean, std),
+
+
+    # LambdaTrans(lambda x: x/255)
     ])
 
 # folders = [f"/share/user{i}" for i in range(6, 23)]
